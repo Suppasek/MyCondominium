@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "964861983354",
+    "firebase_url": "https://waterusagechecker.firebaseio.com",
+    "project_id": "waterusagechecker",
+    "storage_bucket": "waterusagechecker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964861983354:android:cab9d96c9d167659",
+        "android_client_info": {
+          "package_name": "com.kmitl.vpower.waterusagechecker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964861983354-m6sm4hab77opdme3cukrq16esno7i7nr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kmitl.vpower.waterusagechecker",
+            "certificate_hash": "a33870a0cb0ef2d9770c30e0dfb4e893371ca91b"
+          }
+        },
+        {
+          "client_id": "964861983354-djo1tf5ce2a1l8h6gscob1ql49090t72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kmitl.vpower.waterusagechecker",
+            "certificate_hash": "28f4a348203e3633b94b9302aca8129834a3dbf1"
+          }
+        },
+        {
+          "client_id": "964861983354-h6evkc8vrvgqrt69ob1126p75kgn7eqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrirn6s_i5ppjTIJszRFw6704lvX0wi48"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964861983354-h6evkc8vrvgqrt69ob1126p75kgn7eqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964861983354:android:8a99a8d22255150a",
+        "android_client_info": {
+          "package_name": "com.suppasek.mycondo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964861983354-nirbnsuh5di36brbnktus60q6paou32r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suppasek.mycondo",
+            "certificate_hash": "3dbb1b8d049cd62f7d78124bf2ba8a3460398d86"
+          }
+        },
+        {
+          "client_id": "964861983354-h6evkc8vrvgqrt69ob1126p75kgn7eqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrirn6s_i5ppjTIJszRFw6704lvX0wi48"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964861983354-h6evkc8vrvgqrt69ob1126p75kgn7eqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

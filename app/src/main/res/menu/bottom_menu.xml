@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_water"
+        android:title="ค่าน้ำประปา"
+        android:icon="@drawable/ic_water"/>
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="หน้าแรก"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/menu_package"
+        android:title="พัสดุ"
+        android:icon="@drawable/ic_package"/>
+</menu>
