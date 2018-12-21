@@ -1,9 +1,11 @@
-package com.suppasek.mycondo
+package com.suppasek.mycondo.Adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.suppasek.mycondo.R
+import com.suppasek.mycondo.model.Announce
 import kotlinx.android.synthetic.main.item_announce.view.*
 
 class AnnounceAdapter : RecyclerView.Adapter<AnnounceAdapter.ViewHolder>() {
@@ -11,7 +13,7 @@ class AnnounceAdapter : RecyclerView.Adapter<AnnounceAdapter.ViewHolder>() {
     private var announces = ArrayList<Announce>()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.item_announce, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_announce, parent, false)
         return ViewHolder(v)
     }
 
