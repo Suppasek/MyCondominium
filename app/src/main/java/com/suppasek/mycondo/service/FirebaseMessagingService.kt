@@ -1,4 +1,4 @@
-package com.suppasek.mycondo.Service
+package com.suppasek.mycondo.service
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -9,7 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
-import com.suppasek.mycondo.Activity.MainActivity
+import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.R
 
 
@@ -20,7 +20,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         sendNotifivation(notification)
     }
 
-    fun sendNotifivation(notification : RemoteMessage.Notification?) {
+    private fun sendNotifivation(notification : RemoteMessage.Notification?) {
         val title = notification?.title
         val body = notification?.body
 
@@ -41,5 +41,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
         notificationManager.notify(0, notificationBuilder.build())
     }
+
 
 }

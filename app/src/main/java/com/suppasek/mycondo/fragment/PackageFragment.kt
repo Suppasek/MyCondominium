@@ -1,4 +1,4 @@
-package com.suppasek.mycondo.Fragment
+package com.suppasek.mycondo.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,8 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import com.suppasek.mycondo.Adapter.PackageAdapter
+import com.suppasek.mycondo.adapter.PackageAdapter
 import com.suppasek.mycondo.R
+import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.model.Package
 import kotlinx.android.synthetic.main.fragment_package.*
 
@@ -18,6 +19,7 @@ class PackageFragment : Fragment() {
     private val firestore = FirebaseFirestore.getInstance()
     private var packages = ArrayList<Package>()
     private var packageAdapter = PackageAdapter()
+    private var room :String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_package, container, false)
@@ -25,6 +27,7 @@ class PackageFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        room = (activity as MainActivity).room!!
         setProgressBar(true)
         setRecyclerView()
         getData()
@@ -32,7 +35,7 @@ class PackageFragment : Fragment() {
 
     private fun getData() {
         firestore.collection("rooms")
-                .document("house_no 1")
+                .document("house_no $room")
                 .collection("package")
                 .whereEqualTo("status", "pending")
                 .get()
@@ -40,18 +43,22 @@ class PackageFragment : Fragment() {
             for (document in documents) {
                 packages.add(document.toObject(Package::class.java))
             }
-                    Log.wtf("package", packages.size.toString())
                     setProgressBar(false)
                     packageAdapter.notifyDataSetChanged()
+
+                    if (packages.size == 0 &&  package_nothing != null){
+                        package_nothing.visibility = View.VISIBLE
+                    }
         }.addOnFailureListener{
                     Log.wtf("package", it.cause.toString())
                     setProgressBar(false)
+                    package_nothing.visibility = View.VISIBLE
                 }
     }
 
     private fun setRecyclerView() {
         package_package_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        packageAdapter.setItemList(packages)
+        packageAdapter.setItemList(packages, room)
         package_package_list.adapter = packageAdapter
     }
 
