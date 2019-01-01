@@ -8,7 +8,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.R
 
@@ -17,10 +17,10 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         val notification = remoteMessage?.notification
-        sendNotifivation(notification)
+        sendNotification(notification)
     }
 
-    private fun sendNotifivation(notification : RemoteMessage.Notification?) {
+    private fun sendNotification(notification : RemoteMessage.Notification?) {
         val title = notification?.title
         val body = notification?.body
 
