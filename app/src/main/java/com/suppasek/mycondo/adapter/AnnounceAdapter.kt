@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.suppasek.mycondo.R
 import com.suppasek.mycondo.model.Announce
 import kotlinx.android.synthetic.main.item_announce.view.*
@@ -33,7 +34,7 @@ class AnnounceAdapter : RecyclerView.Adapter<AnnounceAdapter.ViewHolder>() {
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val tag = itemView.item_announce_tag
-        val body = itemView.item_announce_body
+        val tag: TextView = itemView.item_announce_tag
+        val body: TextView = itemView.item_announce_body
     }
 }

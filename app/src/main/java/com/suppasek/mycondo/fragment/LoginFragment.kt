@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
 import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.viewmodel.LoginViewModel
 
@@ -40,19 +38,19 @@ class LoginFragment : Fragment() {
             val username = login_username.text.toString()
             val password = login_password.text.toString()
 
-            model.authen(username, password)
+            model.authentication(username, password)
         }
     }
 
     private fun observeAuthenException() {
-        model.publishException()
+        model.observeException()
                 .observe(this, Observer { result ->
                     showDialog(result!!)
                 })
     }
 
     private fun observeRoomNumber() {
-        model.publishRoom()
+        model.publishRoomNumber()
                 .observe(this, Observer { room ->
                     savePreference(room!!)
                     performMainActivity()
@@ -66,6 +64,9 @@ class LoginFragment : Fragment() {
     private fun showDialog(message: String) {
         val builder: AlertDialog.Builder? = activity?.let { AlertDialog.Builder(it) }
         builder?.setMessage(message)?.setTitle("Error")
+        builder?.setPositiveButton("Accept") {
+            dialog, _ -> dialog.dismiss()
+        }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }

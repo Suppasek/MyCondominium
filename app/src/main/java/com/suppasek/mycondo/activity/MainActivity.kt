@@ -50,11 +50,12 @@ class MainActivity : AppCompatActivity() {
         setNavMenu()
 
         observeArrivePackage()
+        model.getPackageData()
     }
 
     //observe data from view model and set package notification
     private fun observeArrivePackage() {
-        model.notifyPackageData()
+        model.observePackageData()
                 .observe(this, Observer { packageAmount ->
                     setPackageNoti(packageAmount!!)
                 })
@@ -98,7 +99,10 @@ class MainActivity : AppCompatActivity() {
         room = sp.getString("room", "0")
     }
 
-    private fun setPackageNoti(size: Int) {
-        bottom_menu.setNotification(size.toString(), 2)
+    private fun setPackageNoti(amount: Int) {
+        //show notification in menu icon if user got new package
+        if (amount > 0) {
+            bottom_menu.setNotification(amount.toString(), 2)
+        }
     }
 }

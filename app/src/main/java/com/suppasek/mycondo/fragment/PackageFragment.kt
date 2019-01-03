@@ -27,7 +27,7 @@ class PackageFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        room = (activity as MainActivity).room!!
+        room = (activity as MainActivity).room
         setProgressBar(true)
         setRecyclerView()
         getData()
