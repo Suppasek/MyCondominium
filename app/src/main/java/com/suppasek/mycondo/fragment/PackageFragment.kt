@@ -3,23 +3,22 @@ package com.suppasek.mycondo.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.suppasek.mycondo.adapter.PackageAdapter
 import com.suppasek.mycondo.R
 import com.suppasek.mycondo.activity.MainActivity
-import com.suppasek.mycondo.model.Package
+import com.suppasek.mycondo.viewmodel.PackageViewModel
 import kotlinx.android.synthetic.main.fragment_package.*
 
 class PackageFragment : Fragment() {
 
-    private val firestore = FirebaseFirestore.getInstance()
-    private var packages = ArrayList<Package>()
+    private lateinit var model: PackageViewModel
     private var packageAdapter = PackageAdapter()
-    private var room :String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_package, container, false)
@@ -27,47 +26,70 @@ class PackageFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        room = (activity as MainActivity).room
+
+        model = ViewModelProviders.of(this).get(PackageViewModel::class.java)
+
+        model.setRoomNo((activity as MainActivity).room)
         setProgressBar(true)
         setRecyclerView()
-        getData()
+
+        //observe before fetch data
+        observePackageData()
+        observeException()
+
+        model.getPackageData()
+
     }
 
-    private fun getData() {
-        firestore.collection("rooms")
-                .document("house_no $room")
-                .collection("package")
-                .whereEqualTo("status", "pending")
-                .get()
-                .addOnSuccessListener {documents ->
-            for (document in documents) {
-                packages.add(document.toObject(Package::class.java))
-            }
+    private fun observePackageData() {
+        model.observePackageData()
+                .observe(this, Observer { packages ->
                     setProgressBar(false)
-                    packageAdapter.notifyDataSetChanged()
 
-                    if (packages.size == 0 &&  package_nothing != null){
-                        package_nothing.visibility = View.VISIBLE
+                    if (packages.size > 0) {
+                        packageAdapter.setItemList(packages, (activity as MainActivity).room)
+                        packageAdapter.notifyDataSetChanged()
                     }
-        }.addOnFailureListener{
-                    Log.wtf("package", it.cause.toString())
+                    else {
+                        showEmptyExceptionTextView()
+                    }
+                })
+
+    }
+
+    private fun observeException() {
+        model.observeException()
+                .observe(this, Observer { exception ->
                     setProgressBar(false)
-                    package_nothing.visibility = View.VISIBLE
-                }
+                    showDialog(exception)
+                    showEmptyExceptionTextView()
+                })
+    }
+
+    private fun showEmptyExceptionTextView() {
+        package_nothing.visibility = View.VISIBLE
     }
 
     private fun setRecyclerView() {
         package_package_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        packageAdapter.setItemList(packages, room)
         package_package_list.adapter = packageAdapter
     }
 
-    private fun setProgressBar(switch : Boolean) {
-        if (switch && package_progress_bar != null){
+    private fun setProgressBar(switch: Boolean) {
+        if (switch && package_progress_bar != null) {
             package_progress_bar.visibility = View.VISIBLE
-        }
-        else if (package_progress_bar != null) {
+        } else if (package_progress_bar != null) {
             package_progress_bar.visibility = View.INVISIBLE
         }
+    }
+
+    private fun showDialog(message: String) {
+        val builder: AlertDialog.Builder? = activity?.let { AlertDialog.Builder(it) }
+        builder?.setMessage(message)?.setTitle("Error")
+        builder?.setPositiveButton("Accept") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog? = builder?.create()
+        dialog?.show()
     }
 }

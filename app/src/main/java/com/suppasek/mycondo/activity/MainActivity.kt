@@ -3,39 +3,52 @@ package com.suppasek.mycondo.activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
+import android.graphics.Color
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import androidx.appcompat.widget.Toolbar
 import com.suppasek.mycondo.fragment.HomeFragment
 import com.suppasek.mycondo.fragment.LoginFragment
 import com.suppasek.mycondo.fragment.PackageFragment
 import com.suppasek.mycondo.R
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.suppasek.mycondo.fragment.WaterFragment
-import com.suppasek.mycondo.viewmodel.MainActivityViewModel
+import com.suppasek.mycondo.viewmodel.LoginViewModel
+import com.suppasek.mycondo.viewmodel.PackageViewModel
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
     private var homeFragment = HomeFragment()
     lateinit var room: String
-    lateinit var model: MainActivityViewModel
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var packageViewModel: PackageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        model = ViewModelProviders.of(this).get(MainActivityViewModel()::class.java)
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel()::class.java)
+        packageViewModel = ViewModelProviders.of(this).get(PackageViewModel()::class.java)
 
-        if (model.isUserSignedIn()) {
+        if (loginViewModel.isUserSignedIn()) {
             setInitialLayout()
         } else {
             bottom_menu.visibility = View.INVISIBLE
             switchFragment(LoginFragment())
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (loginViewModel.isUserSignedIn()) {
+            observeArrivePackage()
+            packageViewModel.getPackageData()
         }
     }
 
@@ -44,20 +57,24 @@ class MainActivity : AppCompatActivity() {
 
         //send room number from shared preference to view model
         getRoomNoFromSharedPreference()
-        model.setRoomNo(room)
+        packageViewModel.setRoomNo(room)
 
         switchFragment(homeFragment)
         setNavMenu()
 
-        observeArrivePackage()
-        model.getPackageData()
+//        observeArrivePackage()
+//        model.getPackageData()
     }
 
     //observe data from view model and set package notification
     private fun observeArrivePackage() {
-        model.observePackageData()
-                .observe(this, Observer { packageAmount ->
-                    setPackageNoti(packageAmount!!)
+        packageViewModel.observePackageData()
+                .observe(this, Observer { packages ->
+                    setPackageNoti(packages.size)
+                    //switch to package fragment when package arrive
+                    if (packages.size > 0) {
+                        switchFragment(PackageFragment())
+                    }
                 })
     }
 
@@ -67,20 +84,23 @@ class MainActivity : AppCompatActivity() {
 
         //set current position to home by default
         bottom_menu.currentItem = 1
-        bottom_menu.defaultBackgroundColor = getColor(R.color.colorPrimary)
+
+        bottom_menu.defaultBackgroundColor = getColor(R.color.bottomBarColor)
 
         bottom_menu.setOnTabSelectedListener { position, _ ->
             when (position) {
+                0 -> {
+                    switchFragment(WaterFragment())
+                    bottom_menu.refresh()
+                    water_spinner_year!!.visibility = View.VISIBLE
+                    return@setOnTabSelectedListener true
+                }
                 1 -> {
                     switchFragment(homeFragment)
                     return@setOnTabSelectedListener true
                 }
                 2 -> {
                     switchFragment(PackageFragment())
-                    return@setOnTabSelectedListener true
-                }
-                0 -> {
-                    switchFragment(WaterFragment())
                     return@setOnTabSelectedListener true
                 }
                 else -> {
@@ -99,10 +119,14 @@ class MainActivity : AppCompatActivity() {
         room = sp.getString("room", "0")
     }
 
-    private fun setPackageNoti(amount: Int) {
+    fun setPackageNoti(amount: Int) {
+        Log.wtf("activity", "set noti $amount")
         //show notification in menu icon if user got new package
         if (amount > 0) {
             bottom_menu.setNotification(amount.toString(), 2)
+        }
+        else {
+            bottom_menu.setNotification("", 2)
         }
     }
 }

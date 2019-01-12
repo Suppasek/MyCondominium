@@ -1,5 +1,6 @@
 package com.suppasek.mycondo.adapter
 
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -8,36 +9,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.suppasek.mycondo.R
+import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.model.Package
 import kotlinx.android.synthetic.main.item_package.view.*
-import kotlinx.android.synthetic.main.fragment_package.view.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.fragment.PackageFragment
+import com.suppasek.mycondo.viewmodel.PackageViewModel
 
 
 class PackageAdapter : RecyclerView.Adapter<PackageAdapter.ViewHolder>() {
 
-    var packages = ArrayList<Package>()
-    var firestore = FirebaseFirestore.getInstance()
     lateinit var room : String
+    var packages = ArrayList<Package>()
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_package, parent, false)
 
-        //set item click listener
+        //set click listener for each item
         v.setOnClickListener {
             removeItem(position, v)
         }
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(view: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = packages[position]
 
-        view.name.text = item.name
-        view.key.text = item.packageNo
-        view.verify.text = item.verify
+        viewHolder.name.text = item.name
+        viewHolder.key.text = item.packageNo
+        viewHolder.verify.text = item.verify
 
     }
 
@@ -55,9 +54,9 @@ class PackageAdapter : RecyclerView.Adapter<PackageAdapter.ViewHolder>() {
         val builder: AlertDialog.Builder? = (v.context).let { AlertDialog.Builder(it) }
         builder?.setMessage("รับพัสดุเรียบร้อยแล้วใช่หรือไม่")
 
+        //in case user has accept their package
         builder?.setPositiveButton("ยืนยัน") { dialog, _ ->
             updateData(position, v)
-            notifyDataSetChanged()
             dialog.dismiss()
         }
 
@@ -71,22 +70,24 @@ class PackageAdapter : RecyclerView.Adapter<PackageAdapter.ViewHolder>() {
     }
 
     private fun updateData(position: Int, v: View) {
+        val model = PackageViewModel()
+
         //update package status
-        firestore.collection("rooms")
-                .document("house_no $room")
-                .collection("package")
-                .document(packages[position].packageNo)
-                .update("status", "complete")
+        model.setRoomNo(room)
+        model.updatePackageData(packages[position].packageNo)
+
         packages.remove(packages[position])
 
-        //refresh bottom nav bar notification
-//        (v.context as MainActivity).observeArrivePackage()
+        //reset bottom menu notification
+        (v.context as MainActivity).setPackageNoti(packages.size)
 
-        (v.context as AppCompatActivity)
-                .supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.main_view, PackageFragment())
-                .commit()
+        //reload package fragment
+        notifyDataSetChanged()
+//        (v.context as MainActivity)
+//                .supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.main_view, PackageFragment())
+//                .commit()
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

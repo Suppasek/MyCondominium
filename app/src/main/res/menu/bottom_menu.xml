@@ -8,8 +8,8 @@
 
     <item
         android:id="@+id/menu_home"
-        android:title="หน้าแรก"
-        android:icon="@drawable/ic_home" />
+        android:title="ข่าวสาร"
+        android:icon="@drawable/ic_news" />
 
     <item
         android:id="@+id/menu_package"

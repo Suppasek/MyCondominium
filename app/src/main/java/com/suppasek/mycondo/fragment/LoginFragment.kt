@@ -28,6 +28,7 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         model = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        setProgressBar(false)
         setConfirmButton()
         observeRoomNumber()
         observeAuthenException()
@@ -38,6 +39,7 @@ class LoginFragment : Fragment() {
             val username = login_username.text.toString()
             val password = login_password.text.toString()
 
+            setProgressBar(true)
             model.authentication(username, password)
         }
     }
@@ -50,8 +52,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun observeRoomNumber() {
-        model.publishRoomNumber()
+        model.observeRoomNumber()
                 .observe(this, Observer { room ->
+                    //login success then save room number in shared preference
                     savePreference(room!!)
                     performMainActivity()
                 })
@@ -77,6 +80,17 @@ class LoginFragment : Fragment() {
 
         editor.putString("room", room)
         editor.apply()
+    }
+
+    private fun setProgressBar(switch : Boolean) {
+        if(switch) {
+            login_box.visibility = View.INVISIBLE
+            login_progress.visibility = View.VISIBLE
+        }
+        else {
+            login_progress.visibility = View.INVISIBLE
+            login_box.visibility = View.VISIBLE
+        }
     }
 
 }
