@@ -14,6 +14,7 @@ import com.suppasek.mycondo.R
 import com.suppasek.mycondo.activity.MainActivity
 import com.suppasek.mycondo.viewmodel.PackageViewModel
 import kotlinx.android.synthetic.main.fragment_package.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class PackageFragment : Fragment() {
 
@@ -28,8 +29,9 @@ class PackageFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         model = ViewModelProviders.of(this).get(PackageViewModel::class.java)
-
         model.setRoomNo((activity as MainActivity).room)
+
+        setToolbarName()
         setProgressBar(true)
         setRecyclerView()
 
@@ -91,5 +93,10 @@ class PackageFragment : Fragment() {
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
+    }
+
+    private fun setToolbarName() {
+        activity!!.toolbar_name.visibility = View.VISIBLE
+        activity!!.toolbar_name.text = "พัสดุ"
     }
 }

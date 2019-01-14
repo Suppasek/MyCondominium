@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import com.suppasek.mycondo.fragment.HomeFragment
 import com.suppasek.mycondo.fragment.LoginFragment
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         switchFragment(homeFragment)
         setNavMenu()
+        setLogoutDialog()
 
 //        observeArrivePackage()
 //        model.getPackageData()
@@ -92,6 +94,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     switchFragment(WaterFragment())
                     bottom_menu.refresh()
+                    toolbar_name.visibility = View.INVISIBLE
                     water_spinner_year!!.visibility = View.VISIBLE
                     return@setOnTabSelectedListener true
                 }
@@ -127,6 +130,23 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             bottom_menu.setNotification("", 2)
+        }
+    }
+
+    private fun setLogoutDialog() {
+        toolbar_logout.setOnClickListener { view ->
+            val builder: AlertDialog.Builder? = let { AlertDialog.Builder(it) }
+            builder?.setMessage("คุณต้องการออกจากระบบใช่หรือไม่")
+            builder?.setPositiveButton("ยืนยัน") { dialog, _ ->
+                switchFragment(LoginFragment())
+                bottom_menu.visibility = View.GONE
+                dialog.dismiss()
+            }
+            builder?.setNegativeButton("ยกเลิก") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog: AlertDialog? = builder?.create()
+            dialog?.show()
         }
     }
 }
