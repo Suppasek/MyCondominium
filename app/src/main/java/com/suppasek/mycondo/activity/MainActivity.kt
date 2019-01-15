@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         if (loginViewModel.isUserSignedIn()) {
             setInitialLayout()
         } else {
-            bottom_menu.visibility = View.INVISIBLE
             switchFragment(LoginFragment())
         }
     }
@@ -55,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     fun setInitialLayout() {
         bottom_menu.visibility = View.VISIBLE
+        main_toolbar.visibility = View.VISIBLE
 
         //send room number from shared preference to view model
         getRoomNoFromSharedPreference()
@@ -63,9 +63,6 @@ class MainActivity : AppCompatActivity() {
         switchFragment(homeFragment)
         setNavMenu()
         setLogoutDialog()
-
-//        observeArrivePackage()
-//        model.getPackageData()
     }
 
     //observe data from view model and set package notification
@@ -140,6 +137,7 @@ class MainActivity : AppCompatActivity() {
             builder?.setPositiveButton("ยืนยัน") { dialog, _ ->
                 switchFragment(LoginFragment())
                 bottom_menu.visibility = View.GONE
+                main_toolbar.visibility = View.GONE
                 dialog.dismiss()
             }
             builder?.setNegativeButton("ยกเลิก") { dialog, _ ->
@@ -149,4 +147,6 @@ class MainActivity : AppCompatActivity() {
             dialog?.show()
         }
     }
+
+
 }
