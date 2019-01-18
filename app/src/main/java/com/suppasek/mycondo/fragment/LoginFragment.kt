@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
         model.observeException()
                 .observe(this, Observer { result ->
                     showDialog(result!!)
+                    setProgressBar(false)
                 })
     }
 
