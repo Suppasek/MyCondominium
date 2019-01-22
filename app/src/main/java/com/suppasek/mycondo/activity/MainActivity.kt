@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         if (loginViewModel.isUserSignedIn()) {
             setInitialLayout()
         } else {
+            bottom_menu.visibility = View.GONE
+            main_toolbar.visibility = View.GONE
             switchFragment(LoginFragment())
         }
     }
