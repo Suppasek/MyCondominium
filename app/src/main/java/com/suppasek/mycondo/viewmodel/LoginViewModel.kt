@@ -50,6 +50,10 @@ class LoginViewModel() : ViewModel() {
                         }))
     }
 
+    fun signOut() {
+        authenRepository.signOut()
+    }
+
     fun isUserSignedIn(): Boolean {
         return authenRepository.isUserSignedIn()
     }

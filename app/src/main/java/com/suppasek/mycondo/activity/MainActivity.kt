@@ -3,7 +3,6 @@ package com.suppasek.mycondo.activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import android.graphics.Color
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import com.suppasek.mycondo.fragment.HomeFragment
 import com.suppasek.mycondo.fragment.LoginFragment
 import com.suppasek.mycondo.fragment.PackageFragment
@@ -45,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         if (loginViewModel.isUserSignedIn()) {
             observeArrivePackage()
             packageViewModel.getPackageData()
@@ -70,10 +67,6 @@ class MainActivity : AppCompatActivity() {
         packageViewModel.observePackageData()
                 .observe(this, Observer { packages ->
                     setPackageNoti(packages.size)
-                    //switch to package fragment when package arrive
-                    if (packages.size > 0) {
-                        switchFragment(PackageFragment())
-                    }
                 })
     }
 
@@ -131,10 +124,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLogoutDialog() {
-        toolbar_logout.setOnClickListener { view ->
+        toolbar_logout.setOnClickListener {
             val builder: AlertDialog.Builder? = let { AlertDialog.Builder(it) }
             builder?.setMessage("คุณต้องการออกจากระบบใช่หรือไม่")
             builder?.setPositiveButton("ยืนยัน") { dialog, _ ->
+                loginViewModel.signOut()
                 switchFragment(LoginFragment())
                 bottom_menu.visibility = View.GONE
                 main_toolbar.visibility = View.GONE
