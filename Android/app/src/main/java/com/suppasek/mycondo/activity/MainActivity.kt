@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     switchFragment(WaterFragment())
                     bottom_menu.refresh()
                     toolbar_name.visibility = View.INVISIBLE
-                    water_spinner_year!!.visibility = View.VISIBLE
+                    water_spinner_year.visibility = View.VISIBLE
                     return@setOnTabSelectedListener true
                 }
                 1 -> {
