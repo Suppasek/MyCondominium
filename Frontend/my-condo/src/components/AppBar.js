@@ -6,8 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 const styles = {
   appBar: {
-    width: "85%",
-    marginLeft: 240
+    width: "85%"
   }
 };
 

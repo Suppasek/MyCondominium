@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import AppBar from "../components/AppBar";
+import PackageForm from "../components/PackageForm";
 
-class Package extends Component {
+export default class Package extends Component {
   render() {
-    return <AppBar name="Package" />;
+    return (
+      <div>
+        <AppBar name="Package" />
+        <PackageForm />
+      </div>
+    );
   }
 }
-
-export default Package;

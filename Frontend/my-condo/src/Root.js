@@ -14,8 +14,10 @@ class Root extends Component {
       <div className="App">
         <CssBaseline />
         <SideMenu />
-        <Route exact path="/" component={accountPage} />
-        <Route exact path="/package" component={packagePage} />
+        <div style={{ marginLeft: 280, marginTop: 160 }}>
+          <Route exact path="/" component={accountPage} />
+          <Route exact path="/package" component={packagePage} />
+        </div>
       </div>
     );
   }

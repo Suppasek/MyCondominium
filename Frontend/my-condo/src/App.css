@@ -1,8 +1,6 @@
 .App {
   display: flex;
-  justify-content: flex-start;
-  flex-flow: column;
-  flex-shrink: 0;
+  flex-direction: row;
   flex-grow: 0;
 }
 
