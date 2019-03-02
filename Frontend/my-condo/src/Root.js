@@ -1,26 +1,31 @@
-import React, { Component } from "react";
-import SideMenu from "./components/SideMenu";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Account from "./pages/Account";
+import React from "react";
+import Account from "./pages/Account/index";
 import { Route } from "react-router-dom";
-import Package from "./pages/Package";
+import Package from "./pages/Package/index";
+import Announce from "./pages/Announce/index";
+import SideMenuContainer from "./components/SideMenuContainer";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  spacer: { marginTop: "10%", marginBottom: "10%" }
+});
 
 const accountPage = () => <Account />;
 const packagePage = () => <Package />;
+const announcePage = () => <Announce />;
 
-class Root extends Component {
-  render() {
-    return (
-      <div className="App">
-        <CssBaseline />
-        <SideMenu />
-        <div style={{ marginLeft: 280, marginTop: 160 }}>
-          <Route exact path="/" component={accountPage} />
-          <Route exact path="/package" component={packagePage} />
-        </div>
-      </div>
-    );
-  }
-}
+const Root = props => (
+  <Grid container direction="row">
+    <Grid item xs={2}>
+      <SideMenuContainer />
+    </Grid>
+    <Grid item xs={6} className={props.classes.spacer}>
+      <Route exact path="/" component={accountPage} />
+      <Route exact path="/package" component={packagePage} />
+      <Route exact path="/announce" component={announcePage} />
+    </Grid>
+  </Grid>
+);
 
-export default Root;
+export default withStyles(styles)(Root);

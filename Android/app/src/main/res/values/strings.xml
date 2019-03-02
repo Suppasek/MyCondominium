@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Condo</string>
+    <string name="announce_tag"><b>ประกาศ</b></string>
 </resources>

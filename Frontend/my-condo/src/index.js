@@ -5,10 +5,11 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import rootReducer from "./reducers";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { MemoryRouter } from "react-router";
+import thunk from "redux-thunk";
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const AppWithRouter = () => (
   <Provider store={store}>

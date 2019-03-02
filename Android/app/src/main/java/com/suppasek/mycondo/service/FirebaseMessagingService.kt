@@ -28,7 +28,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-        var notificationBuilder = NotificationCompat.Builder(this, "Package Notification")
+        val notificationBuilder = NotificationCompat.Builder(this, "Package Notification")
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

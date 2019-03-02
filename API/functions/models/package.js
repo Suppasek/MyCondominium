@@ -1,25 +1,43 @@
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
+const firebase = require("../firebase");
 
-admin.initializeApp();
+const db = firebase.admin.firestore();
 
-const db = admin.firestore();
+var randomNo = () => Math.floor(Math.random() * 10000);
 
-const randomNo = () => Math.floor(Math.random() * 1000);
-
-exports.add = req =>
+exports.add = (room, name, packageNo) =>
   db
     .collection("rooms")
-    .doc("house_no " + req.params.id)
+    .doc("house_no " + room.replace(/\s/g, ""))
     .collection("package")
-    .doc(req.body.packageNo)
+    .doc(packageNo)
     .set(
       JSON.parse(
         JSON.stringify({
-          name: req.body.name,
-          packageNo: req.body.packageNo,
+          name,
+          packageNo,
           status: "pending",
-          verify: randomNo
+          verify: randomNo().toString()
         })
-      )
+      ),
+      { merge: true }
     );
+
+exports.get = (room, res) =>
+  db
+    .collection("rooms")
+    .doc("house_no " + room)
+    .collection("package")
+    .get()
+    .then(function(querySnapshot) {
+      let packages = [];
+      querySnapshot.forEach(function(doc) {
+        packages.push(doc.data());
+      });
+      res.send(packages);
+
+      return null;
+    })
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
+    });

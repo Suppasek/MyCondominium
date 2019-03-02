@@ -1,16 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import PersonIcon from "@material-ui/icons/AccountCircle";
 import BoxIcon from "@material-ui/icons/MoveToInbox";
-import { ListItemIcon } from "@material-ui/core";
+import AnnounceIcon from "@material-ui/icons/Announcement";
 import { withStyles } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
-import { switchMenu } from "../actions";
-import { connect } from "react-redux";
+import SideMenuItem from "./SideMenuItem";
 
 const styles = theme => ({
   drawer: {
@@ -18,72 +15,58 @@ const styles = theme => ({
   },
   paper: {
     width: "15%",
-    position: "absolute",
     flexShrink: 0
   },
   toolbar: theme.mixins.toolbar,
   navLink: { textDecoration: "none" }
 });
 
-class SideMenu extends Component {
-  render() {
-    const classes = this.props.classes;
+const SideMenu = props => (
+  <Drawer
+    variant="permanent"
+    open={true}
+    className={props.classes.Drawer}
+    classes={{ paper: props.classes.paper }}
+    anchor="left"
+  >
+    {/*left some space */}
+    <div className={props.classes.toolbar} />
 
-    return (
-      <Drawer
-        variant="permanent"
-        open={true}
-        className={classes.Drawer}
-        classes={{ paper: classes.paper }}
-        anchor="left"
-      >
-        {/*left some space */}
-        <div className={classes.toolbar} />
+    <Divider />
+    <List component="nav">
+      <NavLink exact to="/" className={props.classes.navLink}>
+        <SideMenuItem
+          selected={props.selected}
+          onSwitch={props.switchEvent}
+          index={0}
+          label="Account"
+        >
+          <PersonIcon />
+        </SideMenuItem>
+      </NavLink>
+      <NavLink exact to="/package" className={props.classes.navLink}>
+        <SideMenuItem
+          selected={props.selected}
+          onSwitch={props.switchEvent}
+          index={1}
+          label="Package"
+        >
+          <BoxIcon />
+        </SideMenuItem>
+      </NavLink>
+      <NavLink exact to="/announce" className={props.classes.navLink}>
+        <SideMenuItem
+          selected={props.selected}
+          onSwitch={props.switchEvent}
+          index={2}
+          label="Announce"
+        >
+          <AnnounceIcon />
+        </SideMenuItem>
+      </NavLink>
+      <Divider />
+    </List>
+  </Drawer>
+);
 
-        <Divider />
-        <List component="nav">
-          <NavLink exact to="/" className={classes.navLink}>
-            <ListItem
-              button
-              selected={this.props.item === 0}
-              onClick={event => this.props.onSwitchItem(event, 0)}
-            >
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary="Account" />
-            </ListItem>
-          </NavLink>
-          <NavLink exact to="/package" className={classes.navLink}>
-            <ListItem
-              button
-              selected={this.props.item === 1}
-              onClick={event => this.props.onSwitchItem(event, 1)}
-            >
-              <ListItemIcon>
-                <BoxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Package" />
-            </ListItem>
-            <Divider />
-          </NavLink>
-        </List>
-      </Drawer>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => ({
-  onSwitchItem(event, index) {
-    dispatch(switchMenu(index));
-  }
-});
-
-const mapStateToProps = state => ({
-  item: state.menus
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(SideMenu));
+export default withStyles(styles)(SideMenu);

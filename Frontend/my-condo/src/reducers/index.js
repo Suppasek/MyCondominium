@@ -1,8 +1,17 @@
 import { combineReducers } from "redux";
-import tabs from "./tabs";
-import menus from "./menus";
+import createPositionWithNamedType from "./position";
+import createStatusWithNamedType from "./status";
+import createFetchResultWithNamedType from "./fetchResult";
 
 export default combineReducers({
-  tabs,
-  menus
+  tab: createPositionWithNamedType("TAB"),
+  menu: createPositionWithNamedType("MENU"),
+  packageSnackBar: createStatusWithNamedType("PACKAGE_SNACKBAR"),
+  postPackageResult: createFetchResultWithNamedType("POST_PACKAGE"),
+  announceTag: createPositionWithNamedType("ANNOUNCE_TAG"),
+  getPackageResult: createFetchResultWithNamedType("GET_PACKAGE"),
+  packageRoom: createPositionWithNamedType("PACKAGE_ROOM"),
+  packageDialogStatus: createStatusWithNamedType("PACKAGE_DIALOG"),
+  postAnnounceResult: createFetchResultWithNamedType("POST_ANNOUNCE"),
+  announceSnackBar: createStatusWithNamedType("ANNOUNCE_SNACKBAR")
 });

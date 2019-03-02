@@ -38,6 +38,10 @@ class LoginViewModel() : ViewModel() {
                 })!!)
     }
 
+    fun updateDeviceToken() {
+        authenRepository.updateDeviceToken(uid)
+    }
+
     fun getRoomNumber(uid: String) {
         disposeBag.add(
                 dataRepository.getRoomNumber(uid)

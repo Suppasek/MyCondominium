@@ -33,7 +33,7 @@ class DataRepository {
         val announces = ArrayList<Announce>()
         return Single.create { emitter: SingleEmitter<ArrayList<Announce>> ->
             firestore.collection("announce")
-                    .orderBy("recordNo")
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {

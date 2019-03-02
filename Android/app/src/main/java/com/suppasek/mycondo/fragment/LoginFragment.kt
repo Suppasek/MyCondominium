@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
 import com.suppasek.mycondo.R
 import kotlinx.android.synthetic.main.fragment_login.*
 import androidx.lifecycle.Observer
@@ -18,7 +17,6 @@ import com.suppasek.mycondo.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
 
-    private val auth = FirebaseAuth.getInstance()
     private lateinit var model : LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,6 +55,7 @@ class LoginFragment : Fragment() {
                 .observe(this, Observer { room ->
                     //login success then save room number in shared preference
                     savePreference(room!!)
+                    model.updateDeviceToken()
                     performMainActivity()
                 })
     }

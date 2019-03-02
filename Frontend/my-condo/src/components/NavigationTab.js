@@ -1,33 +1,29 @@
-import React, { Component } from "react";
+import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { switchTab } from "../actions";
+import { switchPosition } from "../actions";
 import { connect } from "react-redux";
 
-class NavigationTab extends Component {
-  render() {
-    return (
-      <Tabs
-        value={this.props.tab}
-        onChange={this.props.onSwitchTab}
-        indicatorColor="secondary"
-      >
-        <Tab label="Juristic Person" />
-        <Tab label="Water Meter Recorder" />
-        <Tab label="Resident" />
-      </Tabs>
-    );
-  }
-}
+const NavigationTab = props => (
+  <Tabs
+    value={props.tab}
+    onChange={props.onSwitchTab}
+    indicatorColor="secondary"
+  >
+    <Tab label="Juristic Person" />
+    <Tab label="Water Meter Recorder" />
+    <Tab label="Resident" />
+  </Tabs>
+);
 
 const mapDispatchToProps = dispatch => ({
   onSwitchTab(event, value) {
-    dispatch(switchTab(value));
+    dispatch(switchPosition("TAB", value));
   }
 });
 
 const mapStateToProps = state => ({
-  tab: state.tabs
+  tab: state.tab
 });
 
 export default connect(

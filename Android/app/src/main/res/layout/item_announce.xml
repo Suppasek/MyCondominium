@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/item_border"
-    android:padding="8dp">
+    android:elevation="4dp"
+    android:padding="8dp"
+    android:layout_margin="3dp"
+    >
 
     <TextView
         android:id="@+id/item_announce_tag"
@@ -12,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="ประกาศ"
+        android:text="@string/announce_tag"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
